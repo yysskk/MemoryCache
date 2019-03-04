@@ -15,6 +15,9 @@
 		980106D6221D3F4F00A8FDBB /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 980106D5221D3F4F00A8FDBB /* Quick.framework */; };
 		980106DA221D612C00A8FDBB /* AnyCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980106D9221D612C00A8FDBB /* AnyCache.swift */; };
 		980106E1221F9BD200A8FDBB /* Animals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980106DF221F9BC400A8FDBB /* Animals.swift */; };
+		9801072D222CD10A00A8FDBB /* Expiration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9801072C222CD10A00A8FDBB /* Expiration.swift */; };
+		9801072F222CF52800A8FDBB /* MemoryCacheError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9801072E222CF52800A8FDBB /* MemoryCacheError.swift */; };
+		98010732222CFCFE00A8FDBB /* MemoryCacheError+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98010730222CFCE100A8FDBB /* MemoryCacheError+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +43,9 @@
 		980106D7221D437B00A8FDBB /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		980106D9221D612C00A8FDBB /* AnyCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCache.swift; sourceTree = "<group>"; };
 		980106DF221F9BC400A8FDBB /* Animals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animals.swift; sourceTree = "<group>"; };
+		9801072C222CD10A00A8FDBB /* Expiration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expiration.swift; sourceTree = "<group>"; };
+		9801072E222CF52800A8FDBB /* MemoryCacheError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCacheError.swift; sourceTree = "<group>"; };
+		98010730222CFCE100A8FDBB /* MemoryCacheError+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemoryCacheError+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +96,8 @@
 				980106B9221C172B00A8FDBB /* Info.plist */,
 				980106B8221C172B00A8FDBB /* MemoryCache.h */,
 				980106CF221D3C3600A8FDBB /* MemoryCache.swift */,
+				9801072E222CF52800A8FDBB /* MemoryCacheError.swift */,
+				9801072C222CD10A00A8FDBB /* Expiration.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -100,6 +108,7 @@
 				980106DF221F9BC400A8FDBB /* Animals.swift */,
 				980106C5221C172B00A8FDBB /* Info.plist */,
 				980106C3221C172B00A8FDBB /* MemoryCacheSpecs.swift */,
+				98010730222CFCE100A8FDBB /* MemoryCacheError+.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -245,7 +254,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9801072F222CF52800A8FDBB /* MemoryCacheError.swift in Sources */,
 				980106D0221D3C3600A8FDBB /* MemoryCache.swift in Sources */,
+				9801072D222CD10A00A8FDBB /* Expiration.swift in Sources */,
 				980106DA221D612C00A8FDBB /* AnyCache.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -256,6 +267,7 @@
 			files = (
 				980106C4221C172B00A8FDBB /* MemoryCacheSpecs.swift in Sources */,
 				980106E1221F9BD200A8FDBB /* Animals.swift in Sources */,
+				98010732222CFCFE00A8FDBB /* MemoryCacheError+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
