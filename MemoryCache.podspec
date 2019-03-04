@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
                        DESC
 
   s.homepage         = 'https://github.com/yysskk/MemoryCache'
-  s.license          = { :type => 'MIT', :file => 'LICENSE' }
+  s.license          = { :type => 'MIT', :file => './LICENSE' }
   s.author           = { 'yysskk' => 'yusuke.0213@gmail.com' }
   s.source           = { :git => 'https://github.com/yysskk/MemoryCache.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/_yysskk'
