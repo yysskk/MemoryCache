@@ -14,6 +14,8 @@ public protocol MemoryCacheDelegate: class {
 @available(iOS 8.0, *)
 open class MemoryCache: NSObject {
 
+    public typealias Cache<T> = (key: KeyType, value: T, expiration: Expiration)
+
     /// Returns the default singleton instance.
     public static let `default` = MemoryCache()
 
@@ -55,6 +57,7 @@ open class MemoryCache: NSObject {
     }
 
     private let cache: NSCache<KeyType, AnyCache>
+    private let lock = NSLock()
 
     private let defaultTotalCostLimit: Int = {
         let physicalMemory = ProcessInfo().physicalMemory
@@ -79,28 +82,75 @@ open class MemoryCache: NSObject {
     }
 
     /// Sets the value of the specified key that inherits `KeyType` in the memoryCache, and associates the key-value pair with the specified cost.
-    public func set<T>(_ value: T, for key: KeyType, cost: Int = 0) {
-        let anyCache = AnyCache(rawValue: value)
+    ///
+    /// The default expiration is `.never`, cost is `0`.
+    public func set<T>(_ value: T, for key: KeyType, expiration: Expiration = .never, cost: Int = 0) {
+        lock.lock()
+        defer { lock.unlock() }
+
+        let anyCache = AnyCache(value: value, expiration: expiration)
         cache.setObject(anyCache, forKey: key, cost: cost)
     }
 
     /// Returns the value associated with a given key that inherits `KeyType`.
-    public func load<T>(for key: KeyType) -> T? {
-        return cache.object(forKey: key)?.rawValue as? T
+    public func load<T>(for key: KeyType) throws -> Cache<T> {
+        lock.lock()
+        defer { lock.unlock() }
+
+        guard let anyCache = cache.object(forKey: key) else {
+            throw MemoryCacheError.notFound
+        }
+        guard let value = anyCache.value as? T else {
+            throw MemoryCacheError.unexpectedObject(anyCache.value)
+        }
+        guard !anyCache.expiration.isExpired else {
+            throw MemoryCacheError.expired(anyCache.expiration.date)
+        }
+
+        return (key: key, value: value, expiration: anyCache.expiration)
     }
 
     /// Returns the value associated with a given key.
-    public func load<T>(for key: Key<T>) -> T? {
-        return cache.object(forKey: key)?.rawValue as? T
+    public func load<T>(for key: Key<T>) throws -> Cache<T> {
+        lock.lock()
+        defer { lock.unlock() }
+
+        guard let anyCache = cache.object(forKey: key) else {
+            throw MemoryCacheError.notFound
+        }
+        guard let value = anyCache.value as? T else {
+            throw MemoryCacheError.unexpectedObject(anyCache.value)
+        }
+        guard !anyCache.expiration.isExpired else {
+            throw MemoryCacheError.expired(anyCache.expiration.date)
+        }
+
+        return (key: key, value: value, expiration: anyCache.expiration)
     }
 
     /// Removes the value of the specified key that inherits `KeyType` in the memoryCache.
     public func remove(for key: KeyType) {
+        lock.lock()
+        defer { lock.unlock() }
+
+        return cache.removeObject(forKey: key)
+    }
+
+    /// Removes the value of the specified key if it expired in the memoryCache.
+    public func removeIfExpired(for key: KeyType) {
+        lock.lock()
+        defer { lock.unlock() }
+
+        guard let anyCache = cache.object(forKey: key),
+            anyCache.expiration.isExpired else { return }
         return cache.removeObject(forKey: key)
     }
 
     /// Empties the memoryCache.
     public func removeAll() {
+        lock.lock()
+        defer { lock.unlock() }
+
         return cache.removeAllObjects()
     }
 
@@ -110,7 +160,7 @@ open class MemoryCache: NSObject {
 extension MemoryCache: NSCacheDelegate {
     public func cache(_ cache: NSCache<AnyObject, AnyObject>, willEvictObject obj: Any) {
         guard let evictedCache = obj as? AnyCache else { return }
-        delegate?.memoryCache(self, willEvict: evictedCache.rawValue)
+        delegate?.memoryCache(self, willEvict: evictedCache.value)
     }
 }
 

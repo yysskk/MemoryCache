@@ -34,7 +34,12 @@ final class MemoryCacheSpec: QuickSpec {
             }
 
             it("should be dog") {
-                expect(memoryCache.load(for: .dog)?.name).to(be(dog.name))
+                do {
+                    let cache = try memoryCache.load(for: .dog)
+                    expect(cache.value.name).to(be(dog.name))
+                } catch {
+                    fail("Catch \(error.localizedDescription)")
+                }
             }
         }
 
@@ -45,7 +50,12 @@ final class MemoryCacheSpec: QuickSpec {
             }
 
             it("should be dog") {
-                expect(memoryCache.load(for: .dog)?.name).to(be(dog.name))
+                do {
+                    let cache = try memoryCache.load(for: .dog)
+                    expect(cache.value.name).to(be(dog.name))
+                } catch {
+                    fail("Catch \(error.localizedDescription)")
+                }
             }
         }
 
@@ -58,11 +68,25 @@ final class MemoryCacheSpec: QuickSpec {
             }
 
             it("should be nil") {
-                expect(memoryCache.load(for: .dog)).to(beNil())
+                do {
+                    let cache = try memoryCache.load(for: .dog)
+                    fail("Catch \(cache.value)")
+                } catch {
+                    guard let memoryCacheError = error as? MemoryCacheError else {
+                        fail("it not match \(MemoryCacheError.self) type")
+                        return
+                    }
+                    expect(memoryCacheError == .notFound).to(beTrue())
+                }
             }
 
             it("should not be nil") {
-                expect(memoryCache.load(for: .cat)).notTo(beNil())
+                do {
+                    let cache = try memoryCache.load(for: .cat)
+                    expect(cache.value.name).to(be(cat.name))
+                } catch {
+                    fail("Catch \(error.localizedDescription)")
+                }
             }
         }
 
@@ -75,8 +99,27 @@ final class MemoryCacheSpec: QuickSpec {
             }
 
             it("should be nil") {
-                expect(memoryCache.load(for: .dog)).to(beNil())
-                expect(memoryCache.load(for: .cat)).to(beNil())
+                do {
+                    let cache = try memoryCache.load(for: .dog)
+                    fail("Catch \(cache.value)")
+                } catch {
+                    guard let memoryCacheError = error as? MemoryCacheError else {
+                        fail("it not match \(MemoryCacheError.self) type")
+                        return
+                    }
+                    expect(memoryCacheError == .notFound).to(beTrue())
+                }
+
+                do {
+                    let cache = try memoryCache.load(for: .cat)
+                    fail("Catch \(cache.value)")
+                } catch {
+                    guard let memoryCacheError = error as? MemoryCacheError else {
+                        fail("it not match \(MemoryCacheError.self) type")
+                        return
+                    }
+                    expect(memoryCacheError == .notFound).to(beTrue())
+                }
             }
         }
     }
