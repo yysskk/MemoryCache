@@ -12,15 +12,17 @@ public protocol MemoryCacheDelegate: class {
 }
 
 @available(iOS 8.0, *)
-open class MemoryCache: NSObject {
-
-    public typealias Cache<T> = (key: KeyType, value: T, expiration: Expiration)
+open class MemoryCache {
 
     /// Returns the default singleton instance.
     public static let `default` = MemoryCache()
 
     /// The memoryCache’s delegate.
-    public weak var delegate: MemoryCacheDelegate?
+    public weak var delegate: MemoryCacheDelegate? {
+        didSet {
+            _delegate.configure(memoryCache: self)
+        }
+    }
 
     /// The maximum total cost that the memoryCache can hold before it starts evicting caches.
     ///
@@ -58,6 +60,7 @@ open class MemoryCache: NSObject {
 
     private let cache: NSCache<KeyType, AnyCache>
     private let lock = NSLock()
+    private let _delegate = CacheDlegate()
 
     private let defaultTotalCostLimit: Int = {
         let physicalMemory = ProcessInfo().physicalMemory
@@ -66,19 +69,17 @@ open class MemoryCache: NSObject {
         return min(Int.max, Int(limit))
     }()
 
-    private override init() {
+    private init() {
         cache = NSCache()
         cache.totalCostLimit = defaultTotalCostLimit
-        super.init()
-        cache.delegate = self
+        cache.delegate = _delegate
     }
 
     public init(name: String) {
         cache = NSCache()
         cache.name = name
         cache.totalCostLimit = defaultTotalCostLimit
-        super.init()
-        cache.delegate = self
+        cache.delegate = _delegate
     }
 
     /// Sets the value of the specified key that inherits `KeyType` in the memoryCache, and associates the key-value pair with the specified cost.
@@ -107,7 +108,7 @@ open class MemoryCache: NSObject {
             throw MemoryCacheError.expired(anyCache.expiration.date)
         }
 
-        return (key: key, value: value, expiration: anyCache.expiration)
+        return Cache(key: key, value: value, expiration: anyCache.expiration)
     }
 
     /// Returns the value associated with a given key.
@@ -125,7 +126,7 @@ open class MemoryCache: NSObject {
             throw MemoryCacheError.expired(anyCache.expiration.date)
         }
 
-        return (key: key, value: value, expiration: anyCache.expiration)
+        return Cache(key: key, value: value, expiration: anyCache.expiration)
     }
 
     /// Removes the value of the specified key that inherits `KeyType` in the memoryCache.
@@ -156,18 +157,16 @@ open class MemoryCache: NSObject {
 
 }
 
-// MARK: - NSCacheDelegate
-extension MemoryCache: NSCacheDelegate {
-    public func cache(_ cache: NSCache<AnyObject, AnyObject>, willEvictObject obj: Any) {
-        guard let evictedCache = obj as? AnyCache else { return }
-        delegate?.memoryCache(self, willEvict: evictedCache.value)
-    }
-}
-
 extension MemoryCache {
 
+    public struct Cache<T> {
+        let key: KeyType
+        let value: T
+        let expiration: Expiration
+    }
+
     open class KeyType: NSObject {
-        fileprivate override init() {}
+        override init() {}
     }
 
     public class Key<T>: KeyType, RawRepresentable {
