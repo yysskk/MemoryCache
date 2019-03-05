@@ -5,14 +5,16 @@
 //  Created by Yusuke Morishita on 2019/02/19.
 //
 
-final class AnyCache: NSObject, RawRepresentable {
-    typealias RawValue = Any
+final class AnyCache: NSObject {
 
+    let value: Any
+    let expiration: Expiration
 
-    let rawValue: RawValue
+    init(value: Any,
+         expiration: Expiration) {
 
-    init(rawValue: RawValue) {
-        self.rawValue = rawValue
+        self.value = value
+        self.expiration = expiration
     }
 
 }
