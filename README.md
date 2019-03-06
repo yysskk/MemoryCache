@@ -1,6 +1,7 @@
 # MemoryCache
 
 [![CI Status](https://img.shields.io/travis/yysskk/MemoryCache.svg?style=for-the-badge)](https://travis-ci.org/yysskk/MemoryCache)
+[![codecov](https://img.shields.io/codecov/c/github/yysskk/MemoryCache.svg?style=for-the-badge)](https://codecov.io/gh/yysskk/MemoryCache)
 [![Version](https://img.shields.io/cocoapods/v/MemoryCache.svg?style=for-the-badge)](https://cocoapods.org/pods/MemoryCache)
 [![License](https://img.shields.io/cocoapods/l/MemoryCache.svg?style=for-the-badge)](https://cocoapods.org/pods/MemoryCache)
 [![Platform](https://img.shields.io/cocoapods/p/MemoryCache.svg?style=for-the-badge)](https://cocoapods.org/pods/MemoryCache)
