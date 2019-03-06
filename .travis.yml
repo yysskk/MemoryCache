@@ -3,5 +3,7 @@ language: swift
 
 script:
   - set -o pipefail
-  - xcodebuild test -enableCodeCoverage YES -project MemoryCache.xcodeproj -scheme MemoryCacheTests -sdk iphonesimulator | xcpretty -c
+  - xcodebuild test -enableCodeCoverage YES -project MemoryCache.xcodeproj -scheme MemoryCache -sdk iphonesimulator | xcpretty -c
   - pod lib lint
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
