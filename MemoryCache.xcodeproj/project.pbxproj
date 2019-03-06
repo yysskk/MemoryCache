@@ -18,6 +18,7 @@
 		9801072D222CD10A00A8FDBB /* Expiration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9801072C222CD10A00A8FDBB /* Expiration.swift */; };
 		9801072F222CF52800A8FDBB /* MemoryCacheError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9801072E222CF52800A8FDBB /* MemoryCacheError.swift */; };
 		98010732222CFCFE00A8FDBB /* MemoryCacheError+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98010730222CFCE100A8FDBB /* MemoryCacheError+.swift */; };
+		98F67C99222E52FF0024E426 /* MemoryCacheDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F67C98222E52FF0024E426 /* MemoryCacheDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		9801072C222CD10A00A8FDBB /* Expiration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expiration.swift; sourceTree = "<group>"; };
 		9801072E222CF52800A8FDBB /* MemoryCacheError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCacheError.swift; sourceTree = "<group>"; };
 		98010730222CFCE100A8FDBB /* MemoryCacheError+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemoryCacheError+.swift"; sourceTree = "<group>"; };
+		98F67C98222E52FF0024E426 /* MemoryCacheDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCacheDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,11 +95,12 @@
 			isa = PBXGroup;
 			children = (
 				980106D9221D612C00A8FDBB /* AnyCache.swift */,
+				9801072C222CD10A00A8FDBB /* Expiration.swift */,
 				980106B9221C172B00A8FDBB /* Info.plist */,
 				980106B8221C172B00A8FDBB /* MemoryCache.h */,
 				980106CF221D3C3600A8FDBB /* MemoryCache.swift */,
+				98F67C98222E52FF0024E426 /* MemoryCacheDelegate.swift */,
 				9801072E222CF52800A8FDBB /* MemoryCacheError.swift */,
-				9801072C222CD10A00A8FDBB /* Expiration.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9801072F222CF52800A8FDBB /* MemoryCacheError.swift in Sources */,
+				98F67C99222E52FF0024E426 /* MemoryCacheDelegate.swift in Sources */,
 				980106D0221D3C3600A8FDBB /* MemoryCache.swift in Sources */,
 				9801072D222CD10A00A8FDBB /* Expiration.swift in Sources */,
 				980106DA221D612C00A8FDBB /* AnyCache.swift in Sources */,
