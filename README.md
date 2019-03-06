@@ -30,17 +30,17 @@ extension MemoryCache.KeyType {
 }
 ```
 
-#### Set caches
+#### Adding a Cached Value
 ```swift
 MemoryCache.default.set(dog, for: .dog)
 ```
 
-#### Load caches
+#### Loading a Cached Value
 ```swift
 let dog = try MemoryCache.default.load(for: .dog)
 ```
 
-#### Remove caches
+#### Removing Cached Values
 - Removes the cache of the specified key.
 ```swift
 MemoryCache.default.remove(for: .dog)
