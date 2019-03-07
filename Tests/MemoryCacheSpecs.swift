@@ -35,7 +35,7 @@ final class MemoryCacheSpec: QuickSpec {
 
             it("should be dog") {
                 do {
-                    let cache = try memoryCache.load(for: .dog)
+                    let cache = try memoryCache.get(for: .dog)
                     expect(cache.value.name).to(be(dog.name))
                 } catch {
                     fail("Catch \(error.localizedDescription)")
@@ -52,7 +52,7 @@ final class MemoryCacheSpec: QuickSpec {
 
                 it("should be dog") {
                     do {
-                        let cache = try memoryCache.load(for: .dog)
+                        let cache = try memoryCache.get(for: .dog)
                         expect(cache.value.name).to(be(dog.name))
                     } catch {
                         fail("Catch \(error.localizedDescription)")
@@ -67,7 +67,7 @@ final class MemoryCacheSpec: QuickSpec {
 
                 it("should catch MemoryCacheError.expired.notFound error") {
                     do {
-                        let cache = try memoryCache.load(for: .dog)
+                        let cache = try memoryCache.get(for: .dog)
                         fail("Catch \(cache.value)")
                     } catch {
                         guard let memoryCacheError = error as? MemoryCacheError else {
@@ -90,7 +90,7 @@ final class MemoryCacheSpec: QuickSpec {
 
                 it("should catch MemoryCacheError.expired error") {
                     do {
-                        let cache = try memoryCache.load(for: .dog)
+                        let cache = try memoryCache.get(for: .dog)
                         fail("Catch \(cache.value)")
                     } catch {
                         guard let memoryCacheError = error as? MemoryCacheError else {
@@ -124,7 +124,7 @@ final class MemoryCacheSpec: QuickSpec {
 
                 it("should be dog") {
                     do {
-                        let cache = try memoryCache.load(for: .dog)
+                        let cache = try memoryCache.get(for: .dog)
                         expect(cache.value.name).to(be(dog.name))
                     } catch {
                         fail("Catch \(error.localizedDescription)")
@@ -146,7 +146,7 @@ final class MemoryCacheSpec: QuickSpec {
 
                 it("should be dog") {
                     do {
-                        let cache = try memoryCache.load(for: .dog)
+                        let cache = try memoryCache.get(for: .dog)
                         expect(cache.value.name).to(be(dog.name))
                     } catch {
                         fail("Catch \(error.localizedDescription)")
@@ -164,7 +164,7 @@ final class MemoryCacheSpec: QuickSpec {
 
                 it("should catch MemoryCacheError.notFound error") {
                     do {
-                        let cache = try memoryCache.load(for: .dog)
+                        let cache = try memoryCache.get(for: .dog)
                         fail("Catch \(cache.value)")
                     } catch {
                         guard let memoryCacheError = error as? MemoryCacheError else {
@@ -187,7 +187,7 @@ final class MemoryCacheSpec: QuickSpec {
 
             it("should catch MemoryCacheError.notFound error") {
                 do {
-                    let cache = try memoryCache.load(for: .dog)
+                    let cache = try memoryCache.get(for: .dog)
                     fail("Catch \(cache.value)")
                 } catch {
                     guard let memoryCacheError = error as? MemoryCacheError else {
@@ -198,7 +198,7 @@ final class MemoryCacheSpec: QuickSpec {
                 }
 
                 do {
-                    let cache = try memoryCache.load(for: .cat)
+                    let cache = try memoryCache.get(for: .cat)
                     fail("Catch \(cache.value)")
                 } catch {
                     guard let memoryCacheError = error as? MemoryCacheError else {
@@ -222,7 +222,7 @@ final class MemoryCacheSpec: QuickSpec {
 
                 it("should be dog") {
                     do {
-                        let cache = try memoryCache.load(for: .dog)
+                        let cache = try memoryCache.get(for: .dog)
                         expect(cache.value.name).to(be(dog.name))
                     } catch {
                         fail("Catch \(error.localizedDescription)")
@@ -240,7 +240,7 @@ final class MemoryCacheSpec: QuickSpec {
 
                     it("should be dog") {
                         do {
-                            let cache = try memoryCache.load(for: .dog)
+                            let cache = try memoryCache.get(for: .dog)
                             expect(cache.value.name).to(be(dog.name))
                         } catch {
                             fail("Catch \(error.localizedDescription)")
@@ -257,7 +257,7 @@ final class MemoryCacheSpec: QuickSpec {
 
                     it("should catch MemoryCacheError.expired error") {
                         do {
-                            let cache = try memoryCache.load(for: .dog)
+                            let cache = try memoryCache.get(for: .dog)
                             fail("Catch \(cache.value)")
                         } catch {
                             guard let memoryCacheError = error as? MemoryCacheError else {
@@ -285,7 +285,7 @@ final class MemoryCacheSpec: QuickSpec {
 
                     it("should be dog") {
                         do {
-                            let cache = try memoryCache.load(for: .dog)
+                            let cache = try memoryCache.get(for: .dog)
                             expect(cache.value.name).to(be(dog.name))
                         } catch {
                             fail("Catch \(error.localizedDescription)")
@@ -302,7 +302,7 @@ final class MemoryCacheSpec: QuickSpec {
 
                     it("should catch MemoryCacheError.expired error") {
                         do {
-                            let cache = try memoryCache.load(for: .dog)
+                            let cache = try memoryCache.get(for: .dog)
                             fail("Catch \(cache.value)")
                         } catch {
                             guard let memoryCacheError = error as? MemoryCacheError else {

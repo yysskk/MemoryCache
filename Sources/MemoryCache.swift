@@ -94,7 +94,7 @@ open class MemoryCache {
     }
 
     /// Returns the value associated with a given key that inherits `KeyType`.
-    public func load<T>(for key: KeyType) throws -> Cache<T> {
+    public func get<T>(for key: KeyType) throws -> Cache<T> {
         lock.lock()
         defer { lock.unlock() }
 
@@ -112,7 +112,7 @@ open class MemoryCache {
     }
 
     /// Returns the value associated with a given key.
-    public func load<T>(for key: Key<T>) throws -> Cache<T> {
+    public func get<T>(for key: Key<T>) throws -> Cache<T> {
         lock.lock()
         defer { lock.unlock() }
 
