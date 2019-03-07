@@ -12,19 +12,19 @@ MemoryCache is type-safe memory cache. It can benefit from [`NSCache`](https://d
 ```swift
 let memoryCache = MemoryCache(name: "dog")
 
-// Set dog in memoryCache.
+// Setting a dog value in memoryCache.
 memoryCache.set(dog, for: .dog)
 
-// Load dog in memoryCache.
-let cachedDog = try memoryCache.load(for: .dog)
+// Getting a cached dog value in memoryCache.
+let cachedDog = try memoryCache.get(for: .dog)
 
-// Remove dog in memoryCache.
+// Remove a cached dog value in memoryCache.
 memoryCache.remove(for: .dog)
 ```
 
 ## Usage
 ### Basic
-####  Define keys
+####  Defining keys
 ```swift
 extension MemoryCache.KeyType {
     static let dog = MemoryCache.Key<Dog>(rawValue: "dog")
@@ -36,9 +36,9 @@ extension MemoryCache.KeyType {
 MemoryCache.default.set(dog, for: .dog)
 ```
 
-#### Loading a Cached Value
+#### Getting a Cached Value
 ```swift
-let dog = try MemoryCache.default.load(for: .dog)
+let dog = try MemoryCache.default.get(for: .dog)
 ```
 
 #### Removing Cached Values
