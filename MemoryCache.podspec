@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'MemoryCache'
-  s.version          = '0.2.0'
+  s.version          = '0.3.0'
   s.summary          = 'MemoryCache is type-safe memory cache.'
 
   s.description      = <<-DESC
