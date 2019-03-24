@@ -7,49 +7,51 @@
 [![Platform](https://img.shields.io/cocoapods/p/MemoryCache.svg?style=for-the-badge)](https://cocoapods.org/pods/MemoryCache)
 
 ## Overview
-MemoryCache is type-safe memory cache. It can benefit from [`NSCache`](https://developer.apple.com/documentation/foundation/nscache) features by wrapping `NSCache` .
+MemoryCache is a simple memory cache in swift. 
+
+- Type safe.
+- Thread safe.
+- LRU.
 
 ```swift
-let memoryCache = MemoryCache(name: "dog")
+let memoryCache = MemoryCache()
 
 // Setting a dog value in memoryCache.
-memoryCache.set(dog, for: .dog)
+memoryCache.set(dog, for: dogKey)
 
 // Getting a cached dog value in memoryCache.
-let cachedDog = try memoryCache.get(for: .dog)
+let cachedDog = try memoryCache.get(for: dogKey)
 
 // Remove a cached dog value in memoryCache.
-memoryCache.remove(for: .dog)
+memoryCache.remove(for: dogKey)
 ```
 
 ## Usage
 ### Basic
 ####  Defining keys
 ```swift
-extension MemoryCache.KeyType {
-    static let dog = MemoryCache.Key<Dog>(rawValue: "dog")
-}
+let dogKey = StringKey<Dog>("dog")
 ```
 
 #### Adding a Cached Value
 ```swift
-MemoryCache.default.set(dog, for: .dog)
+MemoryCache.default.set(dog, for: dogKey)
 ```
 
 #### Getting a Cached Value
 ```swift
-let dog = try MemoryCache.default.get(for: .dog)
+let dog = try MemoryCache.default.get(for: dogKey)
 ```
 
 #### Removing Cached Values
 - Removes the cache of the specified key.
 ```swift
-MemoryCache.default.remove(for: .dog)
+MemoryCache.default.remove(for: dogKey)
 ```
 
 - Removes the cache of the specified key if it expired.
 ```swift
-MemoryCache.default.removeIfExpired(for: .dog)
+MemoryCache.default.removeIfExpired(for: dogKey)
 ```
 
 - Removes All. 
@@ -96,16 +98,16 @@ You can specify expiration date for cache. The default expiration is `.never`.
 ```swift
 
 /// The expiration date is `.never`.
-memoryCache.set(dog, for: .dog, expiration: .never)
+memoryCache.set(dog, for: dogKey, expiration: .never)
 
 /// The expiration date is `.seconds("""10s""")`.
-memoryCache.set(dog, for: .dog, expiration: .seconds(10))
+memoryCache.set(dog, for: dogKey, expiration: .seconds(10))
 
 /// The expiration date is `.date("""TOMORROW""")`.
-memoryCache.set(dog, for: .dog, expiration: .date(Date().addingTimeInterval(60 * 60 * 24)))
+memoryCache.set(dog, for: dogKey, expiration: .date(Date().addingTimeInterval(60 * 60 * 24)))
 
 /// Remove the cache of the specified key if it expired.
-memoryCache.removeIfExpired(for: .dog)
+memoryCache.removeIfExpired(for: dogKey)
 ```
 
 ## Requirements
@@ -132,10 +134,6 @@ github "yysskk/MemoryCache"
 ```
 
 and run `carthage update`
-
-## To do
-- [x] expiration date of cache
-- [ ] LRU
 
 ## Author
 ### Yusuke Morishita

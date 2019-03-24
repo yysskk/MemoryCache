@@ -5,7 +5,7 @@
 //  Created by Yusuke Morishita on 2019/02/19.
 //
 
-final class AnyCache: NSObject {
+struct AnyCache {
 
     let value: Any
     let expiration: Expiration
@@ -16,5 +16,4 @@ final class AnyCache: NSObject {
         self.value = value
         self.expiration = expiration
     }
-
 }

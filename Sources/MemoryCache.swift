@@ -48,18 +48,7 @@ open class MemoryCache {
         }
     }
 
-    /// Whether the cache will automatically evict discardable-content caches whose content has been discarded.
-    public var evictsCachesWithDiscardedContent: Bool {
-        get {
-            return cache.evictsObjectsWithDiscardedContent
-        }
-        set {
-            cache.evictsObjectsWithDiscardedContent = newValue
-        }
-    }
-
-    private let cache: NSCache<KeyType, AnyCache>
-    private let lock = NSLock()
+    private let cache: LRUCache<AnyKey, AnyCache>
     private let _delegate = CacheDlegate()
 
     private let defaultTotalCostLimit: Int = {
@@ -69,120 +58,74 @@ open class MemoryCache {
         return min(Int.max, Int(limit))
     }()
 
-    private init() {
-        cache = NSCache()
-        cache.totalCostLimit = defaultTotalCostLimit
+    public init(totalCostLimit: Int? = nil,
+                countLimit: Int = 0) {
+        cache = LRUCache()
         cache.delegate = _delegate
-    }
-
-    public init(name: String) {
-        cache = NSCache()
-        cache.name = name
-        cache.totalCostLimit = defaultTotalCostLimit
-        cache.delegate = _delegate
+        self.totalCostLimit = totalCostLimit ?? defaultTotalCostLimit
+        self.countLimit = countLimit
     }
 
     /// Sets the value of the specified key that inherits `KeyType` in the memoryCache, and associates the key-value pair with the specified cost.
     ///
     /// The default expiration is `.never`, cost is `0`.
-    public func set<T>(_ value: T, for key: KeyType, expiration: Expiration = .never, cost: Int = 0) {
-        lock.lock()
-        defer { lock.unlock() }
-
-        let anyCache = AnyCache(value: value, expiration: expiration)
-        cache.setObject(anyCache, forKey: key, cost: cost)
+    public func set<Key: KeyType, Value>(_ value: Value?, for key: Key, expiration: Expiration = .never, cost: Int = 0) where Key.RelatedValue == Value {
+        switch value {
+        case let .some(wrapped):
+            let anyCache = AnyCache(value: wrapped, expiration: expiration)
+            cache.set(anyCache, for: AnyKey(key: key))
+        case .none:
+            remove(for: key)
+        }
     }
 
     /// Returns the value associated with a given key that inherits `KeyType`.
-    public func get<T>(for key: KeyType) throws -> Cache<T> {
-        lock.lock()
-        defer { lock.unlock() }
-
-        guard let anyCache = cache.object(forKey: key) else {
+    public func get<Key: KeyType, Value>(for key: Key) throws -> Entry<Key, Value> where Key.RelatedValue == Value {
+        guard let anyCache = cache.value(for: AnyKey(key: key)) else {
             throw MemoryCacheError.notFound
         }
-        guard let value = anyCache.value as? T else {
+        guard let value = anyCache.value as? Value else {
             throw MemoryCacheError.unexpectedObject(anyCache.value)
         }
         guard !anyCache.expiration.isExpired else {
+            cache.remove(for: AnyKey(key: key))
             throw MemoryCacheError.expired(anyCache.expiration.date)
         }
 
-        return Cache(key: key, value: value, expiration: anyCache.expiration)
-    }
-
-    /// Returns the value associated with a given key.
-    public func get<T>(for key: Key<T>) throws -> Cache<T> {
-        lock.lock()
-        defer { lock.unlock() }
-
-        guard let anyCache = cache.object(forKey: key) else {
-            throw MemoryCacheError.notFound
-        }
-        guard let value = anyCache.value as? T else {
-            throw MemoryCacheError.unexpectedObject(anyCache.value)
-        }
-        guard !anyCache.expiration.isExpired else {
-            throw MemoryCacheError.expired(anyCache.expiration.date)
-        }
-
-        return Cache(key: key, value: value, expiration: anyCache.expiration)
+        return Entry(key: key, value: value, expiration: anyCache.expiration)
     }
 
     /// Removes the value of the specified key that inherits `KeyType` in the memoryCache.
-    public func remove(for key: KeyType) {
-        lock.lock()
-        defer { lock.unlock() }
-
-        return cache.removeObject(forKey: key)
+    public func remove<Key: KeyType, Value>(for key: Key) where Key.RelatedValue == Value {
+        cache.remove(for: AnyKey(key: key))
     }
 
     /// Removes the value of the specified key if it expired in the memoryCache.
-    public func removeIfExpired(for key: KeyType) {
-        lock.lock()
-        defer { lock.unlock() }
-
-        guard let anyCache = cache.object(forKey: key),
+    public func removeIfExpired<Key: KeyType>(for key: Key) {
+        guard let anyCache = cache.value(for: AnyKey(key: key)),
             anyCache.expiration.isExpired else { return }
-        return cache.removeObject(forKey: key)
+        cache.remove(for: AnyKey(key: key))
     }
 
     /// Empties the memoryCache.
     public func removeAll() {
-        lock.lock()
-        defer { lock.unlock() }
-
-        return cache.removeAllObjects()
+        return cache.removeAll()
     }
 
+    public subscript<Key: KeyType, Value>(key: Key) -> Value? where Key.RelatedValue == Value {
+        get {
+            return try? get(for: key).value
+        }
+        set(value) {
+            set(value, for: key)
+        }
+    }
 }
 
 extension MemoryCache {
-
-    public struct Cache<T> {
-        let key: KeyType
-        let value: T
+    public struct Entry<Key: KeyType, Value> {
+        let key: Key
+        let value: Value
         let expiration: Expiration
     }
-
-    open class KeyType: NSObject {
-        override init() {}
-    }
-
-    public class Key<T>: KeyType, RawRepresentable {
-        public typealias RawValue = String
-
-        public let rawValue: RawValue
-
-        required public init(rawValue: RawValue) {
-            self.rawValue = rawValue
-            super.init()
-        }
-
-        override public func isEqual(_ object: Any?) -> Bool {
-            guard let key = object as? Key<T> else { return false }
-            return rawValue == key.rawValue
-        }
-    }
-
 }
