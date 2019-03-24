@@ -18,6 +18,6 @@ final class CacheDlegate: LRUCacheDelegate {
     func cache(willEvict cache: Any) {
         guard let memoryCache = memoryCache,
             let cache = cache as? AnyCache else { return }
-        memoryCache.delegate?.memoryCache(memoryCache, willEvict: cache)
+        memoryCache.delegate?.memoryCache(memoryCache, willEvict: cache.value)
     }
 }

@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		980106BF221C172B00A8FDBB /* MemoryCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 980106B5221C172B00A8FDBB /* MemoryCache.framework */; };
-		980106C4221C172B00A8FDBB /* MemoryCacheSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980106C3221C172B00A8FDBB /* MemoryCacheSpecs.swift */; };
+		980106C4221C172B00A8FDBB /* MemoryCacheSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980106C3221C172B00A8FDBB /* MemoryCacheSpec.swift */; };
 		980106C6221C172B00A8FDBB /* MemoryCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 980106B8221C172B00A8FDBB /* MemoryCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		980106D0221D3C3600A8FDBB /* MemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980106CF221D3C3600A8FDBB /* MemoryCache.swift */; };
 		980106D4221D3F4500A8FDBB /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 980106D3221D3F4500A8FDBB /* Nimble.framework */; };
@@ -23,6 +23,8 @@
 		EE3123AC224650D30007697A /* LRUCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3123AB224650D30007697A /* LRUCache.swift */; };
 		EE3123AE224701F10007697A /* AnyKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3123AD224701F10007697A /* AnyKey.swift */; };
 		EE3123B0224702290007697A /* KeyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3123AF224702290007697A /* KeyType.swift */; };
+		EE3123B422470F9A0007697A /* MemoryCacheDelegateSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3123B222470F130007697A /* MemoryCacheDelegateSpec.swift */; };
+		EE3123B8224714ED0007697A /* MemoryCache+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3123B5224714760007697A /* MemoryCache+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,7 +42,7 @@
 		980106B8221C172B00A8FDBB /* MemoryCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryCache.h; sourceTree = "<group>"; };
 		980106B9221C172B00A8FDBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		980106BE221C172B00A8FDBB /* MemoryCacheTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MemoryCacheTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		980106C3221C172B00A8FDBB /* MemoryCacheSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCacheSpecs.swift; sourceTree = "<group>"; };
+		980106C3221C172B00A8FDBB /* MemoryCacheSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCacheSpec.swift; sourceTree = "<group>"; };
 		980106C5221C172B00A8FDBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		980106CF221D3C3600A8FDBB /* MemoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCache.swift; sourceTree = "<group>"; };
 		980106D3221D3F4500A8FDBB /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
@@ -56,6 +58,8 @@
 		EE3123AB224650D30007697A /* LRUCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUCache.swift; sourceTree = "<group>"; };
 		EE3123AD224701F10007697A /* AnyKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyKey.swift; sourceTree = "<group>"; };
 		EE3123AF224702290007697A /* KeyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyType.swift; sourceTree = "<group>"; };
+		EE3123B222470F130007697A /* MemoryCacheDelegateSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCacheDelegateSpec.swift; sourceTree = "<group>"; };
+		EE3123B5224714760007697A /* MemoryCache+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemoryCache+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,8 +125,10 @@
 			children = (
 				980106DF221F9BC400A8FDBB /* Animals.swift */,
 				980106C5221C172B00A8FDBB /* Info.plist */,
-				980106C3221C172B00A8FDBB /* MemoryCacheSpecs.swift */,
+				EE3123B5224714760007697A /* MemoryCache+.swift */,
+				EE3123B222470F130007697A /* MemoryCacheDelegateSpec.swift */,
 				98010730222CFCE100A8FDBB /* MemoryCacheError+.swift */,
+				980106C3221C172B00A8FDBB /* MemoryCacheSpec.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -293,9 +299,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				980106C4221C172B00A8FDBB /* MemoryCacheSpecs.swift in Sources */,
+				980106C4221C172B00A8FDBB /* MemoryCacheSpec.swift in Sources */,
+				EE3123B8224714ED0007697A /* MemoryCache+.swift in Sources */,
 				980106E1221F9BD200A8FDBB /* Animals.swift in Sources */,
 				98010732222CFCFE00A8FDBB /* MemoryCacheError+.swift in Sources */,
+				EE3123B422470F9A0007697A /* MemoryCacheDelegateSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

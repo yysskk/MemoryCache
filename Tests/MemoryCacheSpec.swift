@@ -1,5 +1,5 @@
 //
-//  MemoryCache.h
+//  MemoryCacheSpec.swift
 //  MemoryCache
 //
 //  Created by Yusuke Morishita on 2019/02/19.
@@ -8,14 +8,6 @@
 import Quick
 import Nimble
 @testable import MemoryCache
-
-extension MemoryCache {
-    enum Key {
-        static let dog = StringKey<Dog>("dog")
-        static let dog2 = StringKey<Dog>("dog2")
-        static let cat = StringKey<Cat>("cat")
-    }
-}
 
 final class MemoryCacheSpec: QuickSpec {
 
