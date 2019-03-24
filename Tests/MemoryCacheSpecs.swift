@@ -9,33 +9,36 @@ import Quick
 import Nimble
 @testable import MemoryCache
 
-extension MemoryCache.KeyType {
-    static let dog = MemoryCache.Key<Dog>(rawValue: "dog")
-    static let cat = MemoryCache.Key<Cat>(rawValue: "cat")
+extension MemoryCache {
+    enum Key {
+        static let dog = StringKey<Dog>("dog")
+        static let dog2 = StringKey<Dog>("dog2")
+        static let cat = StringKey<Cat>("cat")
+    }
 }
 
 final class MemoryCacheSpec: QuickSpec {
 
     override func spec() {
         var memoryCache: MemoryCache!
-        var cat: Cat!
         var dog: Dog!
+        var dog2: Dog!
 
         beforeEach {
-            cat = Cat(name: "CAT")
             dog = Dog(name: "DOG")
+            dog2 = Dog(name: "DOG2")
             memoryCache = MemoryCache.default
         }
 
         describe("set") {
             beforeEach {
                 memoryCache.removeAll()
-                memoryCache.set(dog, for: .dog)
+                memoryCache.set(dog, for: MemoryCache.Key.dog)
             }
 
             it("should be dog") {
                 do {
-                    let cache = try memoryCache.get(for: .dog)
+                    let cache = try memoryCache.get(for: MemoryCache.Key.dog)
                     expect(cache.value.name).to(be(dog.name))
                 } catch {
                     fail("Catch \(error.localizedDescription)")
@@ -47,12 +50,12 @@ final class MemoryCacheSpec: QuickSpec {
             context("normal") {
                 beforeEach {
                     memoryCache.removeAll()
-                    memoryCache.set(dog, for: .dog)
+                    memoryCache.set(dog, for: MemoryCache.Key.dog)
                 }
 
                 it("should be dog") {
                     do {
-                        let cache = try memoryCache.get(for: .dog)
+                        let cache = try memoryCache.get(for: MemoryCache.Key.dog)
                         expect(cache.value.name).to(be(dog.name))
                     } catch {
                         fail("Catch \(error.localizedDescription)")
@@ -67,7 +70,7 @@ final class MemoryCacheSpec: QuickSpec {
 
                 it("should catch MemoryCacheError.expired.notFound error") {
                     do {
-                        let cache = try memoryCache.get(for: .dog)
+                        let cache = try memoryCache.get(for: MemoryCache.Key.dog)
                         fail("Catch \(cache.value)")
                     } catch {
                         guard let memoryCacheError = error as? MemoryCacheError else {
@@ -85,12 +88,12 @@ final class MemoryCacheSpec: QuickSpec {
                 beforeEach {
                     memoryCache.removeAll()
                     expiration = .date(Date(timeIntervalSinceNow: -60))
-                    memoryCache.set(dog, for: .dog, expiration: expiration)
+                    memoryCache.set(dog, for: MemoryCache.Key.dog, expiration: expiration)
                 }
 
                 it("should catch MemoryCacheError.expired error") {
                     do {
-                        let cache = try memoryCache.get(for: .dog)
+                        let cache = try memoryCache.get(for: MemoryCache.Key.dog)
                         fail("Catch \(cache.value)")
                     } catch {
                         guard let memoryCacheError = error as? MemoryCacheError else {
@@ -111,20 +114,20 @@ final class MemoryCacheSpec: QuickSpec {
         describe("remove") {
             beforeEach {
                 memoryCache.removeAll()
-                memoryCache.set(dog, for: .dog)
-                memoryCache.set(cat, for: .cat)
-                memoryCache.remove(for: .dog)
+                memoryCache.set(dog, for: MemoryCache.Key.dog)
+                memoryCache.set(dog2, for: MemoryCache.Key.dog2)
+                memoryCache.remove(for: MemoryCache.Key.dog)
             }
 
             context("normal") {
                 beforeEach {
                     memoryCache.removeAll()
-                    memoryCache.set(dog, for: .dog)
+                    memoryCache.set(dog, for: MemoryCache.Key.dog)
                 }
 
                 it("should be dog") {
                     do {
-                        let cache = try memoryCache.get(for: .dog)
+                        let cache = try memoryCache.get(for: MemoryCache.Key.dog)
                         expect(cache.value.name).to(be(dog.name))
                     } catch {
                         fail("Catch \(error.localizedDescription)")
@@ -140,13 +143,13 @@ final class MemoryCacheSpec: QuickSpec {
                 beforeEach {
                     memoryCache.removeAll()
                     expiration = .date(Date(timeIntervalSinceNow: 60 * 60))
-                    memoryCache.set(dog, for: .dog, expiration: expiration)
-                    memoryCache.removeIfExpired(for: .dog)
+                    memoryCache.set(dog, for: MemoryCache.Key.dog, expiration: expiration)
+                    memoryCache.removeIfExpired(for: MemoryCache.Key.dog)
                 }
 
                 it("should be dog") {
                     do {
-                        let cache = try memoryCache.get(for: .dog)
+                        let cache = try memoryCache.get(for: MemoryCache.Key.dog)
                         expect(cache.value.name).to(be(dog.name))
                     } catch {
                         fail("Catch \(error.localizedDescription)")
@@ -158,13 +161,13 @@ final class MemoryCacheSpec: QuickSpec {
                 beforeEach {
                     memoryCache.removeAll()
                     expiration = .date(Date(timeIntervalSinceNow: -60))
-                    memoryCache.set(dog, for: .dog, expiration: expiration)
-                    memoryCache.removeIfExpired(for: .dog)
+                    memoryCache.set(dog, for: MemoryCache.Key.dog, expiration: expiration)
+                    memoryCache.removeIfExpired(for: MemoryCache.Key.dog)
                 }
 
                 it("should catch MemoryCacheError.notFound error") {
                     do {
-                        let cache = try memoryCache.get(for: .dog)
+                        let cache = try memoryCache.get(for: MemoryCache.Key.dog)
                         fail("Catch \(cache.value)")
                     } catch {
                         guard let memoryCacheError = error as? MemoryCacheError else {
@@ -180,14 +183,14 @@ final class MemoryCacheSpec: QuickSpec {
         describe("removeAll") {
             beforeEach {
                 memoryCache.removeAll()
-                memoryCache.set(dog, for: .dog)
-                memoryCache.set(cat, for: .cat)
+                memoryCache.set(dog, for: MemoryCache.Key.dog)
+                memoryCache.set(dog2, for: MemoryCache.Key.dog2)
                 memoryCache.removeAll()
             }
 
             it("should catch MemoryCacheError.notFound error") {
                 do {
-                    let cache = try memoryCache.get(for: .dog)
+                    let cache = try memoryCache.get(for: MemoryCache.Key.dog)
                     fail("Catch \(cache.value)")
                 } catch {
                     guard let memoryCacheError = error as? MemoryCacheError else {
@@ -198,7 +201,7 @@ final class MemoryCacheSpec: QuickSpec {
                 }
 
                 do {
-                    let cache = try memoryCache.get(for: .cat)
+                    let cache = try memoryCache.get(for: MemoryCache.Key.cat)
                     fail("Catch \(cache.value)")
                 } catch {
                     guard let memoryCacheError = error as? MemoryCacheError else {
@@ -217,12 +220,12 @@ final class MemoryCacheSpec: QuickSpec {
                 beforeEach {
                     memoryCache.removeAll()
                     expiration = .never
-                    memoryCache.set(dog, for: .dog, expiration: expiration)
+                    memoryCache.set(dog, for: MemoryCache.Key.dog, expiration: expiration)
                 }
 
                 it("should be dog") {
                     do {
-                        let cache = try memoryCache.get(for: .dog)
+                        let cache = try memoryCache.get(for: MemoryCache.Key.dog)
                         expect(cache.value.name).to(be(dog.name))
                     } catch {
                         fail("Catch \(error.localizedDescription)")
@@ -235,12 +238,12 @@ final class MemoryCacheSpec: QuickSpec {
                     beforeEach {
                         memoryCache.removeAll()
                         expiration = .seconds(60 * 60)
-                        memoryCache.set(dog, for: .dog, expiration: expiration)
+                        memoryCache.set(dog, for: MemoryCache.Key.dog, expiration: expiration)
                     }
 
                     it("should be dog") {
                         do {
-                            let cache = try memoryCache.get(for: .dog)
+                            let cache = try memoryCache.get(for: MemoryCache.Key.dog)
                             expect(cache.value.name).to(be(dog.name))
                         } catch {
                             fail("Catch \(error.localizedDescription)")
@@ -252,12 +255,12 @@ final class MemoryCacheSpec: QuickSpec {
                     beforeEach {
                         memoryCache.removeAll()
                         expiration = .seconds(-60)
-                        memoryCache.set(dog, for: .dog, expiration: expiration)
+                        memoryCache.set(dog, for: MemoryCache.Key.dog, expiration: expiration)
                     }
 
                     it("should catch MemoryCacheError.expired error") {
                         do {
-                            let cache = try memoryCache.get(for: .dog)
+                            let cache = try memoryCache.get(for: MemoryCache.Key.dog)
                             fail("Catch \(cache.value)")
                         } catch {
                             guard let memoryCacheError = error as? MemoryCacheError else {
@@ -280,12 +283,12 @@ final class MemoryCacheSpec: QuickSpec {
                     beforeEach {
                         memoryCache.removeAll()
                         expiration = .date(Date(timeIntervalSinceNow: 60 * 60))
-                        memoryCache.set(dog, for: .dog, expiration: expiration)
+                        memoryCache.set(dog, for: MemoryCache.Key.dog, expiration: expiration)
                     }
 
                     it("should be dog") {
                         do {
-                            let cache = try memoryCache.get(for: .dog)
+                            let cache = try memoryCache.get(for: MemoryCache.Key.dog)
                             expect(cache.value.name).to(be(dog.name))
                         } catch {
                             fail("Catch \(error.localizedDescription)")
@@ -297,12 +300,12 @@ final class MemoryCacheSpec: QuickSpec {
                     beforeEach {
                         memoryCache.removeAll()
                         expiration = .date(Date(timeIntervalSinceNow: -60))
-                        memoryCache.set(dog, for: .dog, expiration: expiration)
+                        memoryCache.set(dog, for: MemoryCache.Key.dog, expiration: expiration)
                     }
 
                     it("should catch MemoryCacheError.expired error") {
                         do {
-                            let cache = try memoryCache.get(for: .dog)
+                            let cache = try memoryCache.get(for: MemoryCache.Key.dog)
                             fail("Catch \(cache.value)")
                         } catch {
                             guard let memoryCacheError = error as? MemoryCacheError else {

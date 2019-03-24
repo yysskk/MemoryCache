@@ -18,7 +18,11 @@
 		9801072D222CD10A00A8FDBB /* Expiration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9801072C222CD10A00A8FDBB /* Expiration.swift */; };
 		9801072F222CF52800A8FDBB /* MemoryCacheError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9801072E222CF52800A8FDBB /* MemoryCacheError.swift */; };
 		98010732222CFCFE00A8FDBB /* MemoryCacheError+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98010730222CFCE100A8FDBB /* MemoryCacheError+.swift */; };
-		98F67C99222E52FF0024E426 /* MemoryCacheDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F67C98222E52FF0024E426 /* MemoryCacheDelegate.swift */; };
+		98F67C99222E52FF0024E426 /* CacheDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F67C98222E52FF0024E426 /* CacheDelegate.swift */; };
+		EE3123AA224650BA0007697A /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3123A9224650BA0007697A /* LinkedList.swift */; };
+		EE3123AC224650D30007697A /* LRUCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3123AB224650D30007697A /* LRUCache.swift */; };
+		EE3123AE224701F10007697A /* AnyKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3123AD224701F10007697A /* AnyKey.swift */; };
+		EE3123B0224702290007697A /* KeyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3123AF224702290007697A /* KeyType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +51,11 @@
 		9801072C222CD10A00A8FDBB /* Expiration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expiration.swift; sourceTree = "<group>"; };
 		9801072E222CF52800A8FDBB /* MemoryCacheError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCacheError.swift; sourceTree = "<group>"; };
 		98010730222CFCE100A8FDBB /* MemoryCacheError+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemoryCacheError+.swift"; sourceTree = "<group>"; };
-		98F67C98222E52FF0024E426 /* MemoryCacheDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCacheDelegate.swift; sourceTree = "<group>"; };
+		98F67C98222E52FF0024E426 /* CacheDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheDelegate.swift; sourceTree = "<group>"; };
+		EE3123A9224650BA0007697A /* LinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
+		EE3123AB224650D30007697A /* LRUCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRUCache.swift; sourceTree = "<group>"; };
+		EE3123AD224701F10007697A /* AnyKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyKey.swift; sourceTree = "<group>"; };
+		EE3123AF224702290007697A /* KeyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,10 +83,10 @@
 			isa = PBXGroup;
 			children = (
 				980106D7221D437B00A8FDBB /* README.md */,
+				980106D2221D3F4500A8FDBB /* Frameworks */,
+				980106B6221C172B00A8FDBB /* Products */,
 				980106B7221C172B00A8FDBB /* Sources */,
 				980106C2221C172B00A8FDBB /* Tests */,
-				980106B6221C172B00A8FDBB /* Products */,
-				980106D2221D3F4500A8FDBB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -95,11 +103,14 @@
 			isa = PBXGroup;
 			children = (
 				980106D9221D612C00A8FDBB /* AnyCache.swift */,
+				EE3123AD224701F10007697A /* AnyKey.swift */,
+				98F67C98222E52FF0024E426 /* CacheDelegate.swift */,
 				9801072C222CD10A00A8FDBB /* Expiration.swift */,
 				980106B9221C172B00A8FDBB /* Info.plist */,
+				EE3123AF224702290007697A /* KeyType.swift */,
+				EE3123B12247097D0007697A /* LRU */,
 				980106B8221C172B00A8FDBB /* MemoryCache.h */,
 				980106CF221D3C3600A8FDBB /* MemoryCache.swift */,
-				98F67C98222E52FF0024E426 /* MemoryCacheDelegate.swift */,
 				9801072E222CF52800A8FDBB /* MemoryCacheError.swift */,
 			);
 			path = Sources;
@@ -123,6 +134,15 @@
 				980106D3221D3F4500A8FDBB /* Nimble.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EE3123B12247097D0007697A /* LRU */ = {
+			isa = PBXGroup;
+			children = (
+				EE3123A9224650BA0007697A /* LinkedList.swift */,
+				EE3123AB224650D30007697A /* LRUCache.swift */,
+			);
+			path = LRU;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,9 +277,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE3123AE224701F10007697A /* AnyKey.swift in Sources */,
+				EE3123AA224650BA0007697A /* LinkedList.swift in Sources */,
 				9801072F222CF52800A8FDBB /* MemoryCacheError.swift in Sources */,
-				98F67C99222E52FF0024E426 /* MemoryCacheDelegate.swift in Sources */,
+				98F67C99222E52FF0024E426 /* CacheDelegate.swift in Sources */,
 				980106D0221D3C3600A8FDBB /* MemoryCache.swift in Sources */,
+				EE3123AC224650D30007697A /* LRUCache.swift in Sources */,
+				EE3123B0224702290007697A /* KeyType.swift in Sources */,
 				9801072D222CD10A00A8FDBB /* Expiration.swift in Sources */,
 				980106DA221D612C00A8FDBB /* AnyCache.swift in Sources */,
 			);
