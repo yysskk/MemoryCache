@@ -7,11 +7,11 @@
 [![Platform](https://img.shields.io/cocoapods/p/MemoryCache.svg?style=for-the-badge)](https://cocoapods.org/pods/MemoryCache)
 
 ## Overview
-MemoryCache is a simple memory cache in swift. 
+MemoryCache is a LRU memory cache in swift. 
 
-- Type safe.
-- Thread safe.
-- LRU.
+- The MemoryCache class iincorporates **LRU** policies, which ensure that a cache doesn’t use too much of the system’s memory. If memory is needed by other applications, it removes some items from the cache, minimizing its memory footprint.
+- You can add, remove, and query items in the cache from different threads without having to lock the cache yourself.
+- Unlike the NSCache class, the cache guarantees a type by its key.
 
 ```swift
 let memoryCache = MemoryCache()
@@ -20,7 +20,7 @@ let memoryCache = MemoryCache()
 memoryCache.set(dog, for: dogKey)
 
 // Getting a cached dog value in memoryCache.
-let cachedDog = try memoryCache.get(for: dogKey)
+let cachedDog = try? memoryCache.value(for: dogKey)
 
 // Remove a cached dog value in memoryCache.
 memoryCache.remove(for: dogKey)
@@ -40,7 +40,7 @@ MemoryCache.default.set(dog, for: dogKey)
 
 #### Getting a Cached Value
 ```swift
-let dog = try MemoryCache.default.get(for: dogKey)
+let dog = try? MemoryCache.default.value(for: dogKey)
 ```
 
 #### Removing Cached Values

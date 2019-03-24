@@ -1,10 +1,13 @@
 Pod::Spec.new do |s|
   s.name             = 'MemoryCache'
-  s.version          = '0.3.0'
-  s.summary          = 'MemoryCache is type-safe memory cache.'
+  s.version          = '1.0.0'
+  s.summary          = 'MemoryCache is a LRU memory cache in swift.'
 
   s.description      = <<-DESC
-                       MemoryCache is type-safe memory cache. It can benefit from `NSCache` features by wrapping `NSCache`.
+                       MemoryCache is LRU, type-safe, thread-safe memory cache.
+                        - The MemoryCache class iincorporates **LRU** policies, which ensure that a cache doesn’t use too much of the system’s memory. If memory is needed by other applications, it removes some items from the cache, minimizing its memory footprint.
+                        - You can add, remove, and query items in the cache from different threads without having to lock the cache yourself.
+                        - Unlike the NSCache class, the cache guarantees a type by its key.
                        DESC
 
   s.homepage         = 'https://github.com/yysskk/MemoryCache'
@@ -17,5 +20,5 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
 
   s.swift_version = '4.2'
-  s.source_files = 'Sources/*.swift'
+  s.source_files = 'Sources/**/*.swift'
 end

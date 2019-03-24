@@ -60,6 +60,7 @@
 		EE3123AF224702290007697A /* KeyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyType.swift; sourceTree = "<group>"; };
 		EE3123B222470F130007697A /* MemoryCacheDelegateSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCacheDelegateSpec.swift; sourceTree = "<group>"; };
 		EE3123B5224714760007697A /* MemoryCache+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemoryCache+.swift"; sourceTree = "<group>"; };
+		EE3123BA2247187C0007697A /* MemoryCache.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MemoryCache.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				980106D7221D437B00A8FDBB /* README.md */,
+				EE3123BA2247187C0007697A /* MemoryCache.podspec */,
 				980106D2221D3F4500A8FDBB /* Frameworks */,
 				980106B6221C172B00A8FDBB /* Products */,
 				980106B7221C172B00A8FDBB /* Sources */,
