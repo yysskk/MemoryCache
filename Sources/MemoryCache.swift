@@ -80,7 +80,7 @@ open class MemoryCache {
     }
 
     /// Returns the value associated with a given key that inherits `KeyType`.
-    public func get<Key: KeyType, Value>(for key: Key) throws -> Entry<Key, Value> where Key.RelatedValue == Value {
+    public func value<Key: KeyType, Value>(for key: Key) throws -> Entry<Key, Value> where Key.RelatedValue == Value {
         guard let anyCache = cache.value(for: AnyKey(key: key)) else {
             throw MemoryCacheError.notFound
         }
@@ -114,7 +114,7 @@ open class MemoryCache {
 
     public subscript<Key: KeyType, Value>(key: Key) -> Value? where Key.RelatedValue == Value {
         get {
-            return try? get(for: key).value
+            return try? value(for: key).value
         }
         set(value) {
             set(value, for: key)
