@@ -69,9 +69,14 @@ open class MemoryCache {
     /// Sets the value of the specified key that inherits `KeyType` in the memoryCache, and associates the key-value pair with the specified cost.
     ///
     /// The default expiration is `.never`, cost is `0`.
-    public func set<Key: KeyType, Value>(_ value: Value, for key: Key, expiration: Expiration = .never, cost: Int = 0) where Key.RelatedValue == Value {
-        let anyCache = AnyCache(value: value, expiration: expiration)
-        cache.set(anyCache, for: AnyKey(key: key))
+    public func set<Key: KeyType, Value>(_ value: Value?, for key: Key, expiration: Expiration = .never, cost: Int = 0) where Key.RelatedValue == Value {
+        switch value {
+        case let .some(wrapped):
+            let anyCache = AnyCache(value: wrapped, expiration: expiration)
+            cache.set(anyCache, for: AnyKey(key: key))
+        case .none:
+            remove(for: key)
+        }
     }
 
     /// Returns the value associated with a given key that inherits `KeyType`.
@@ -105,6 +110,15 @@ open class MemoryCache {
     /// Empties the memoryCache.
     public func removeAll() {
         return cache.removeAll()
+    }
+
+    public subscript<Key: KeyType, Value>(key: Key) -> Value? where Key.RelatedValue == Value {
+        get {
+            return try? get(for: key).value
+        }
+        set(value) {
+            set(value, for: key)
+        }
     }
 }
 
