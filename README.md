@@ -70,6 +70,15 @@ var totalCostLimit: Int
 
 /// The maximum number of caches the memoryCache should hold.
 var countLimit: Int
+
+/// The total cost of values in the memoryCache.
+var totalCost: Int
+
+/// The number of values in the memoryCache.
+var count: Int
+
+/// A Boolean value indicating whether the memoryCache has no values.
+var isEmpty: Bool
 ```
 
 #### Implement delegate
