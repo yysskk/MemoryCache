@@ -7,14 +7,17 @@
 [![Platform](https://img.shields.io/cocoapods/p/MemoryCache.svg?style=for-the-badge)](https://cocoapods.org/pods/MemoryCache)
 
 ## Overview
-MemoryCache is a LRU memory cache in swift. 
+MemoryCache is a memory cache class in swift. 
 
-- The MemoryCache class iincorporates **LRU** policies, which ensure that a cache doesn’t use too much of the system’s memory. If memory is needed by other applications, it removes some items from the cache, minimizing its memory footprint.
-- You can add, remove, and query items in the cache from different threads without having to lock the cache yourself.
-- Unlike the NSCache class, the cache guarantees a type by its key.
+- The MemoryCache class incorporates **LRU** policies, which ensure that a cache doesn’t use too much of the system’s memory. If memory is needed by other applications, it removes some items from the cache, minimizing its memory footprint.
+- You can add, remove, and query items with **expiration** in the cache from different threads without having to lock the cache yourself. ( **thread-safe** )
+- Unlike the NSCache class, the cache guarantees a type by its key. ( **type-safe** )
 
 ```swift
-let memoryCache = MemoryCache()
+let memoryCache = MemoryCache.default // or initialize
+
+// Defining a string (or hash) key for a dog value.
+let dogKey = StringKey<Dog>("dog")
 
 // Setting a dog value in memoryCache.
 memoryCache.set(dog, for: dogKey)
@@ -22,7 +25,7 @@ memoryCache.set(dog, for: dogKey)
 // Getting a cached dog value in memoryCache.
 let cachedDog = try? memoryCache.value(for: dogKey)
 
-// Remove a cached dog value in memoryCache.
+// Removing a cached dog value in memoryCache.
 memoryCache.remove(for: dogKey)
 ```
 
@@ -35,28 +38,28 @@ let dogKey = StringKey<Dog>("dog")
 
 #### Adding a Cached Value
 ```swift
-MemoryCache.default.set(dog, for: dogKey)
+memoryCache.set(dog, for: dogKey)
 ```
 
 #### Getting a Cached Value
 ```swift
-let dog = try? MemoryCache.default.value(for: dogKey)
+let dog = try? memoryCache.value(for: dogKey)
 ```
 
 #### Removing Cached Values
 - Removes the cache of the specified key.
 ```swift
-MemoryCache.default.remove(for: dogKey)
+memoryCache.remove(for: dogKey)
 ```
 
 - Removes the cache of the specified key if it expired.
 ```swift
-MemoryCache.default.removeIfExpired(for: dogKey)
+memoryCache.removeIfExpired(for: dogKey)
 ```
 
 - Removes All. 
 ```swift
-MemoryCache.default.removeAll()
+memoryCache.removeAll()
 ```
 
 ### Others
@@ -67,9 +70,6 @@ var totalCostLimit: Int
 
 /// The maximum number of caches the memoryCache should hold.
 var countLimit: Int
-
-/// Whether the cache will automatically evict discardable-content caches whose content has been discarded.
-var evictsCachesWithDiscardedContent: Bool
 ```
 
 #### Implement delegate
@@ -79,11 +79,16 @@ import MemoryCache
 
 class SomeClass: NSObject, MemoryCacheDelegate {
 
+    let memoryCache: MemoryCache
+    
     init() {
+        memoryCache = MemoryCache.default
+        
         ...
+        
         super.init()
 
-        MemoryCache.default.delegate = self
+        memoryCache.delegate = self
     }
     
     func memoryCache(_ memoryCache: MemoryCache, willEvict cache: Any) {
@@ -96,7 +101,6 @@ class SomeClass: NSObject, MemoryCacheDelegate {
 You can specify expiration date for cache. The default expiration is `.never`.
 
 ```swift
-
 /// The expiration date is `.never`.
 memoryCache.set(dog, for: dogKey, expiration: .never)
 
