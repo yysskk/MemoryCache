@@ -11,6 +11,6 @@ extension MemoryCache {
     enum Key {
         static let dog = StringKey<Dog>("dog")
         static let dog2 = StringKey<Dog>("dog2")
-        static let cat = StringKey<Cat>("cat")
+        static let cat = HashKey<Cat>("cat".hashValue)
     }
 }

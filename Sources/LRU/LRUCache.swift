@@ -29,6 +29,10 @@ final class LRUCache<Key, Value> where Key: Hashable {
         return map.count
     }
 
+    var isEmpty: Bool {
+        return list.isEmpty
+    }
+
     private var map = [Key: LinkedList<Entry>.Node]()
     private let list = LinkedList<Entry>()
     private let lock = NSLock()
@@ -51,6 +55,7 @@ final class LRUCache<Key, Value> where Key: Hashable {
 
         let cache = Entry(key: key, value: value, cost: cost)
         map[key] = list.append(cache)
+        totalCost += cost
         _sync()
     }
 
@@ -80,6 +85,7 @@ final class LRUCache<Key, Value> where Key: Hashable {
 
     private func _remove(_ node: LinkedList<Entry>.Node, for key: Key) {
         list.remove(node)
+        totalCost -= node.value.cost
         delegate?.cache(willEvict: node.value.value)
         map.removeValue(forKey: key)
     }
@@ -90,19 +96,20 @@ final class LRUCache<Key, Value> where Key: Hashable {
 
         map = [:]
         list.removeAll()
+        totalCost = 0
     }
 
     private func _sync() {
         if totalCostLimit > 0 {
-            _sync(while: { totalCostLimit > totalCost })
+            _sync(while: { totalCostLimit < totalCost })
         }
         if countLimit > 0 {
-            _sync(while: { countLimit > count })
+            _sync(while: { countLimit < count })
         }
     }
 
     private func _sync(while condition: () -> Bool) {
-        guard !condition(),
+        guard condition(),
             let node = list.last else { return }
         _remove(node, for: node.value.key)
         _sync(while: condition)

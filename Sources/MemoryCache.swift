@@ -48,6 +48,18 @@ open class MemoryCache {
         }
     }
 
+    public var totalCost: Int {
+        return cache.totalCost
+    }
+
+    public var count: Int {
+        return cache.count
+    }
+
+    public var isEmpty: Bool {
+        return cache.isEmpty
+    }
+
     private let cache: LRUCache<AnyKey, AnyCache>
     private let _delegate = CacheDlegate()
 
@@ -73,7 +85,7 @@ open class MemoryCache {
         switch value {
         case let .some(wrapped):
             let anyCache = AnyCache(value: wrapped, expiration: expiration)
-            cache.set(anyCache, for: AnyKey(key: key))
+            cache.set(anyCache, for: AnyKey(key: key), cost: cost)
         case .none:
             remove(for: key)
         }
