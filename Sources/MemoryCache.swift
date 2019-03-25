@@ -48,14 +48,17 @@ open class MemoryCache {
         }
     }
 
+    /// The total cost of values in the memoryCache.
     public var totalCost: Int {
         return cache.totalCost
     }
 
+    /// The number of values in the memoryCache.
     public var count: Int {
         return cache.count
     }
 
+    /// A Boolean value indicating whether the memoryCahc has no values.
     public var isEmpty: Bool {
         return cache.isEmpty
     }
